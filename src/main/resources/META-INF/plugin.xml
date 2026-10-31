@@ -1,0 +1,51 @@
+<idea-plugin>
+    <id>net.phoenix.chromatic.codes</id>
+    <name>Chromatic Codes Preview</name>
+    <vendor email="connorsmithcool2006@gmail.com">Phoenixvine</vendor>
+
+    <description><![CDATA[
+        <p>Preview Phoenix Chromatic Codes, a minecraft mod allowing you to use custom color codes, directly in your files.</p>
+        <ul>
+            <li><b>Gutter color previews:</b> a swatch next to every line that uses a chromatic code
+                (<code>&amp;z</code>, <code>&sect;^</code>, <code>&amp;[wave]</code>). Click it to change the color; for
+                gradients, edit the start and end colors together. The change is written back to your config.</li>
+            <li><b>Syntax highlighting:</b> string text is colored to match the in-game result, in Java, Kotlin,
+                JSON lang files, properties, YAML and any other file with string literals.</li>
+            <li><b>Animated preview:</b> press Alt+Enter on a coded string to see movement and color effects
+                (wave, shake, pulse, rainbow, glitch and more) animated.</li>
+            <li><b>Code completion:</b> type <code>&amp;[</code> inside a string to get named effects.</li>
+            <li><b>Generator tool window:</b> combine a movement with solid, gradient or rainbow colors,
+                name it, preview it live and insert it at the caret. New effects are saved to your config.</li>
+            <li><b>Custom colors:</b> reads your project's <code>phoenix_chromatic_colors_codes.yaml</code>
+                (or <code>phoenix_chromatic_codes.yaml</code>) so colors and gradients you define are recognized,
+                and reloads when the file changes.</li>
+        </ul>
+    ]]></description>
+
+    <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <postStartupActivity implementation="net.phoenix.chromatic.ChromaticProjectActivity"/>
+
+        <!-- Any language: lang .json files, .properties, .yaml, Java, Kotlin, ... -->
+        <annotator
+                language=""
+                implementationClass="net.phoenix.chromatic.ChromaticAnnotator"/>
+
+        <projectConfigurable
+                parentId="tools"
+                displayName="Chromatic Codes"
+                id="net.phoenix.chromatic.settings"
+                instance="net.phoenix.chromatic.ChromaticSettingsConfigurable"/>
+
+        <completion.contributor
+                language="any"
+                implementationClass="net.phoenix.chromatic.completion.ChromaticCompletionContributor"/>
+
+        <toolWindow
+                id="Chromatic Generator"
+                anchor="right"
+                icon="AllIcons.Actions.Colors"
+                factoryClass="net.phoenix.chromatic.toolwindow.ChromaticToolWindowFactory"/>
+    </extensions>
+</idea-plugin>
